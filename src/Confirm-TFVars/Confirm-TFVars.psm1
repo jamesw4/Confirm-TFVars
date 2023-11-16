@@ -69,7 +69,7 @@ function Confirm-TFVars {
         If ($null -ne $result) {
             $filename = $tfvar.name
             Write-Error "Validation of $filename failed."
-            $result
+            $result | Where-Object { $($_.GetType()).name -eq "ErrorRecord" }
             $errorCount++
         }
     }

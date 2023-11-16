@@ -48,8 +48,8 @@ The output mirrors native terraform output, any errors are passed directly from 
 
 ### <u>Success Example</u>
 
-![Alt text](Screenshots/Success.png)
+![Success Example Image](Screenshots/Success.png)
 
 ### <u>Failure Example</u>
 
-![Alt text](Screenshots/Failure.png)
+![Failure Example Image](Screenshots/Failure.png)
