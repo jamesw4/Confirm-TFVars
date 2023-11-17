@@ -38,5 +38,4 @@ jobs:
         name: test
         run: |
           cp -r src/Confirm-TFVars $home/.local/share/powershell/Modules/
-          import-module Confirm-TFVars
-          get-help confirm-tfvars
+          publish-module -name Confirm-TFVars
