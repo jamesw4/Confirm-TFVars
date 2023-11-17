@@ -36,6 +36,9 @@ jobs:
 
       - shell: pwsh
         name: test
+        env:
+          POWERSHELL_GALLERY_API_KEY: ${{secrets.POWERSHELL_GALLERY_API_KEY}}
         run: |
+          write-host $env:POWERSHELL_GALLERY_API_KEY
           cp -r src/Confirm-TFVars $home/.local/share/powershell/Modules/
           publish-module -name Confirm-TFVars
