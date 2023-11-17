@@ -40,4 +40,4 @@ jobs:
           POWERSHELL_GALLERY_API_KEY: ${{secrets.POWERSHELL_GALLERY_API_KEY}}
         run: |
           cp -r src/Confirm-TFVars $home/.local/share/powershell/Modules/
-          publish-module -name Confirm-TFVars --NuGetApiKey $env:POWERSHELL_GALLERY_API_KEY
+          publish-module -name Confirm-TFVars -NuGetApiKey $env:POWERSHELL_GALLERY_API_KEY
