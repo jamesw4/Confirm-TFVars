@@ -36,4 +36,4 @@ jobs:
 
       - shell: pwsh
         name: test
-        run: dir
+        run: dir | select *
