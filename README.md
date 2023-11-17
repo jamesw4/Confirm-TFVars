@@ -1,5 +1,7 @@
 # Confirm-TFVars
 
+![PublishStatus](https://github.com/jamesw4/Confirm-TFVars/actions/workflows/publish.yml/badge.svg)
+
 A cross platform PowerShell module to validate tfvars files based on variable definition and validation rules.
 
 ## Why?
