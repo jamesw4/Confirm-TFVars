@@ -36,4 +36,6 @@ jobs:
 
       - shell: pwsh
         name: test
-        run: dir | select *
+        run: |
+          cp -r src/Confirm-TFVars $home/.local/share/powershell/Modules/
+          import-module Confirm-TFVars
