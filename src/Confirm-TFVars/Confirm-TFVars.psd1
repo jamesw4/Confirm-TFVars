@@ -15,7 +15,7 @@
     ModuleVersion     = '0.0.3'
 
     # Supported PSEditions
-    # CompatiblePSEditions = @()
+    # = @()
 
     # ID used to uniquely identify this module
     GUID              = '464d215b-5187-4504-b146-d6246c8debfb'
@@ -30,7 +30,7 @@
     Copyright         = '(c) James.Williams. All rights reserved.'
 
     # Description of the functionality provided by this module
-    Description       = 'Uses terraform console to validate tfvars files against variable definition.'
+    Description       = 'A cross platform PowerShell module to validate tfvars files based on variable definition and validation rules.e definition and validation rules.'
 
     # Minimum version of the PowerShell engine required by this module
     # PowerShellVersion = ''
@@ -95,7 +95,7 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags       = @('Terraform', 'TFVars')
+            Tags       = @('Terraform', 'TFVars', 'Windows', 'Linux', 'PSEdition_Desktop', 'PSEdition_Core')
 
             # A URL to the license for this module.
             # LicenseUri = ''

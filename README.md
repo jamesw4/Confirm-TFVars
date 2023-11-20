@@ -1,8 +1,10 @@
 # Confirm-TFVars
 
-![PublishStatus](https://github.com/jamesw4/Confirm-TFVars/actions/workflows/publish.yml/badge.svg)
-
 A cross platform PowerShell module to validate tfvars files based on variable definition and validation rules.
+
+| GitHub Actions                                      | PSGallery                                               | Latest Version                  |
+|:---------------------------------------------------:|:-------------------------------------------------------:|:-------------------------------:|
+| [![PublishStatus][publish-badge]][publish-pipeline] | [![PowerShell Gallery][psgallery-badge]][psgallery-url] | ![GitHubTag][version-tag-badge]
 
 ## Why?
 
@@ -55,3 +57,9 @@ The output mirrors native terraform output, any errors are passed directly from 
 ### <u>Failure Example</u>
 
 ![Failure Example Image](Screenshots/Failure.png)
+
+[publish-badge]: https://img.shields.io/github/actions/workflow/status/jamesw4/confirm-tfvars/publish.yml?logo=github&label=Publish
+[publish-pipeline]: https://github.com/jamesw4/Confirm-TFVars/actions/workflows/publish.yml
+[psgallery-badge]: https://img.shields.io/powershellgallery/dt/Confirm-TFVars?label=Downloads&logo=powershell&color=0a7bbc
+[psgallery-url]: https://www.powershellgallery.com/packages/Confirm-TFVars
+[version-tag-badge]: https://img.shields.io/github/v/tag/jamesw4/Confirm-TFVars?label=Version&logo=task

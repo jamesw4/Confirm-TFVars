@@ -1,3 +1,41 @@
+function Confirm-TF {
+    <#
+    .SYNOPSIS
+     Runs 'terraform validate' and 'confirm-tfvars' in sequence.
+    .DESCRIPTION
+     Runs 'terraform validate' and 'confirm-tfvars' in sequence.
+    .LINK
+     https://github.com/jamesw4/confirm-tfvars
+    .INPUTS
+     None
+    .OUTPUTS
+     None
+    #>
+
+    [cmdletbinding()]
+    param()
+
+    If (-not(Get-Command("terraform") -ErrorAction SilentlyContinue)) {
+        $PSCmdlet.ThrowTerminatingError((New-Object System.Management.Automation.ErrorRecord "Terraform CLI is required, but could not be found.", "", ([System.Management.Automation.ErrorCategory]::NotSpecified), ""))
+    }
+
+    $errorCount = 0
+
+    terraform validate
+    if ($? -eq $false) {
+        $errorCount++
+    }
+    
+    Confirm-TFVars
+    if ($? -eq $false) {
+        $errorCount++
+    }
+
+    If ($errorCount -gt 0) {
+        $PSCmdlet.ThrowTerminatingError((New-Object System.Management.Automation.ErrorRecord "Overall validation failed.", "", ([System.Management.Automation.ErrorCategory]::NotSpecified), ""))
+    }
+}
+
 function Confirm-TFVars {
     <#
     .SYNOPSIS
@@ -25,6 +63,7 @@ function Confirm-TFVars {
      Attempts validation using vars.tf as the defintion and validates dev.tfvars in current directory.
     #>
 
+    [cmdletbinding()]
     param (
         [string]$VarFile = "*.tfvars",
         [string]$VariableDefinitionFile = "variables.tf"
@@ -35,23 +74,19 @@ function Confirm-TFVars {
     $tfvars = Get-ChildItem $VarFile -ErrorAction SilentlyContinue
 
     If (-not(Get-Command("terraform") -ErrorAction SilentlyContinue)) {
-        Write-Error "Terraform CLI is required, but could not be found."
-        return
+        $PSCmdlet.ThrowTerminatingError((New-Object System.Management.Automation.ErrorRecord "Terraform CLI is required, but could not be found.", "", ([System.Management.Automation.ErrorCategory]::NotSpecified), ""))
     }
 
     If ($(Get-ChildItem *.tf).count -eq 0) {
-        Write-Error "No terraform files found in current directory, rerun from a directory containing terraform configuration."
-        return
+        $PSCmdlet.ThrowTerminatingError((New-Object System.Management.Automation.ErrorRecord "No terraform files found in current directory, rerun from a directory containing terraform configuration.", "", ([System.Management.Automation.ErrorCategory]::NotSpecified), ""))
     }
 
     If (-not(Test-Path $VariableDefinitionFile)) {
-        Write-Error "Variable definition file ""$VariableDefinitionFile"" could not be found."
-        return
+        $PSCmdlet.ThrowTerminatingError((New-Object System.Management.Automation.ErrorRecord "Variable definition file ""$VariableDefinitionFile"" could not be found.", "", ([System.Management.Automation.ErrorCategory]::NotSpecified), ""))
     }
 
     If ($($tfvars).count -eq 0) {
-        Write-Error "No vars files found matching name ""$varfile""."
-        return
+        $PSCmdlet.ThrowTerminatingError((New-Object System.Management.Automation.ErrorRecord "No vars files found matching name ""$varfile"".", "", ([System.Management.Automation.ErrorCategory]::NotSpecified), ""))
     }
 
     # Copy variable defintion to a temp folder so we can target it in isolation
@@ -65,17 +100,20 @@ function Confirm-TFVars {
 
     # Loop through the tfvars and validate
     foreach ($tfvar in $tfvars) {
-        $result = "exit" | terraform -chdir="$Folder" console --var-file=$tfvar 2>&1
-        If ($null -ne $result) {
+        $result = """exit""" | terraform -chdir="$Folder" console --var-file=$tfvar 2>&1
+        $resultErrors = $result | Where-Object { $($_.GetType()).name -eq "ErrorRecord" }
+        If ($null -ne $resultErrors) {
             $filename = $tfvar.name
             Write-Error "Validation of $filename failed."
-            $result | Where-Object { $($_.GetType()).name -eq "ErrorRecord" }
             $errorCount++
         }
     }
 
     If ($errorCount -eq 0) {
         Write-Host "Success!" -ForegroundColor Green -NoNewline; Write-Host " The variables are valid."
+    }
+    else {
+        $PSCmdlet.ThrowTerminatingError((New-Object System.Management.Automation.ErrorRecord "One or more variable validation errors occured.", "", ([System.Management.Automation.ErrorCategory]::NotSpecified), ""))
     }
 
     # Tidy up
