@@ -46,6 +46,13 @@ Full native PowerShell help is available in the module via `Get-Help`.
 Get-Help Confirm-TFVars -Full
 ```
 
+The following two Cmdlets are included in the module:
+
+|  Cmdlet                                | Description                                                                                           |
+|----------------------------------------|-------------------------------------------------------------------------------------------------------|
+| Confirm-TFVars                         | The main functionality used to validate tfvars files.
+| Confirm-TF                             | Runs `terraform validate` and `confirm-tfvars` in sequence and confirms overall validation of the two.
+
 ## What to expect
 
 The output mirrors native terraform output, any errors are passed directly from terraform to the console.
