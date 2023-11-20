@@ -12,7 +12,7 @@
     RootModule        = 'Confirm-TFVars.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.0.3'
+    ModuleVersion     = '0.0.4'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -30,7 +30,7 @@
     Copyright         = '(c) James.Williams. All rights reserved.'
 
     # Description of the functionality provided by this module
-    Description       = 'Uses terraform console to validate tfvars files against variable definition.'
+    Description       = 'A cross platform PowerShell module to validate tfvars files based on variable definition and validation rules.e definition and validation rules.'
 
     # Minimum version of the PowerShell engine required by this module
     # PowerShellVersion = ''
@@ -69,7 +69,7 @@
     # NestedModules = @()
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport = 'Confirm-TFVars'
+    FunctionsToExport = 'Confirm-TFVars', 'Confirm-TF'
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport   = @()
@@ -95,7 +95,7 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags       = @('Terraform', 'TFVars')
+            Tags       = @('Terraform', 'TFVars', 'Windows', 'Linux', 'PSEdition_Desktop', 'PSEdition_Core')
 
             # A URL to the license for this module.
             # LicenseUri = ''
