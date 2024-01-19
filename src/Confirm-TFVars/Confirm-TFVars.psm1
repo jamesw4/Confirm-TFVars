@@ -4,6 +4,10 @@ function Confirm-TF {
      Runs 'terraform validate' and 'confirm-tfvars' in sequence.
     .DESCRIPTION
      Runs 'terraform validate' and 'confirm-tfvars' in sequence.
+    .PARAMETER VarFile
+     Optionally specify the tfvars file name to validate, if ommited all tfvars in current directory will be validated. Wildcards can be used for pattern matching. 
+    .PARAMETER VariableDefinitionFile
+     Specify the terraform file that contains the variable definitions, if ommited defaults to variables.tf.
     .LINK
      https://github.com/jamesw4/confirm-tfvars
     .INPUTS
@@ -13,7 +17,10 @@ function Confirm-TF {
     #>
 
     [cmdletbinding()]
-    param()
+    param(
+        [string]$VarFile = "*.tfvars",
+        [string]$VariableDefinitionFile = "variables.tf"
+    )
 
     If (-not(Get-Command("terraform") -ErrorAction SilentlyContinue)) {
         $PSCmdlet.ThrowTerminatingError((New-Object System.Management.Automation.ErrorRecord "Terraform CLI is required, but could not be found.", "", ([System.Management.Automation.ErrorCategory]::NotSpecified), ""))
@@ -26,7 +33,7 @@ function Confirm-TF {
         $errorCount++
     }
     
-    Confirm-TFVars
+    Confirm-TFVars -VarFile $VarFile -VariableDefinitionFile $VariableDefinitionFile
     if ($? -eq $false) {
         $errorCount++
     }
@@ -43,7 +50,7 @@ function Confirm-TFVars {
     .DESCRIPTION
      Uses terraform console to verify a tfvars file against variable definition.
     .PARAMETER VarFile
-     Optionally specify the tfvars file name to validate, if commited all tfvars in current directory will be validated.
+     Optionally specify the tfvars file name to validate, if ommited all tfvars in current directory will be validated. Wildcards can be used for pattern matching. 
     .PARAMETER VariableDefinitionFile
      Specify the terraform file that contains the variable definitions, if ommited defaults to variables.tf.
     .LINK
@@ -58,6 +65,9 @@ function Confirm-TFVars {
     .EXAMPLE
      Confirm-TFVars -VarFile dev.tfvars
      Attempts validation assuming the variable defintion is in variables.tf and validates dev.tfvars in current directory.
+    .EXAMPLE
+     Confirm-TFVars -VarFile .\envs\*.tfvars
+     Attempts validation assuming the variable defintion is in variables.tf and validates all tfvars in the directory envs.
     .EXAMPLE
      Confirm-TFVars -VarFile dev.tfvars -VariableDefinitionFile vars.tf
      Attempts validation using vars.tf as the defintion and validates dev.tfvars in current directory.
@@ -77,12 +87,8 @@ function Confirm-TFVars {
         $PSCmdlet.ThrowTerminatingError((New-Object System.Management.Automation.ErrorRecord "Terraform CLI is required, but could not be found.", "", ([System.Management.Automation.ErrorCategory]::NotSpecified), ""))
     }
 
-    If ($(Get-ChildItem *.tf).count -eq 0) {
-        $PSCmdlet.ThrowTerminatingError((New-Object System.Management.Automation.ErrorRecord "No terraform files found in current directory, rerun from a directory containing terraform configuration.", "", ([System.Management.Automation.ErrorCategory]::NotSpecified), ""))
-    }
-
     If (-not(Test-Path $VariableDefinitionFile)) {
-        $PSCmdlet.ThrowTerminatingError((New-Object System.Management.Automation.ErrorRecord "Variable definition file ""$VariableDefinitionFile"" could not be found.", "", ([System.Management.Automation.ErrorCategory]::NotSpecified), ""))
+        $PSCmdlet.ThrowTerminatingError((New-Object System.Management.Automation.ErrorRecord "Variable definition file ""$VariableDefinitionFile"" could not be found in the current directory. If its not in the current working directory, or uses a different filename then you can specify its location with the VariableDefinitionFile parameter.", "", ([System.Management.Automation.ErrorCategory]::NotSpecified), ""))
     }
 
     If ($($tfvars).count -eq 0) {

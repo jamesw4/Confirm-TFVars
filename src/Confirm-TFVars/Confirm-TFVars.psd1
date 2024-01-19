@@ -12,7 +12,7 @@
     RootModule        = 'Confirm-TFVars.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.0.4'
+    ModuleVersion     = '0.0.5'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -30,7 +30,7 @@
     Copyright         = '(c) James.Williams. All rights reserved.'
 
     # Description of the functionality provided by this module
-    Description       = 'A cross platform PowerShell module to validate tfvars files based on variable definition and validation rules.e definition and validation rules.'
+    Description       = 'A cross platform PowerShell module to validate tfvars files based on variable definition and validation rules.'
 
     # Minimum version of the PowerShell engine required by this module
     # PowerShellVersion = ''
